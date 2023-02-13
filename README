@@ -1,0 +1,38 @@
+For this application the database was designed as the following:
+
+first table: role
+columns:
+ role_id (PK)
+ role_name
+ role_description
+
+ second table: permission
+ columns:
+ permission_id (PK)
+ permission_description
+
+ third table:  role_permission
+ columns:
+ role_id (FK ref role(role_id))
+ permission_id (FK ref permission(permission_id))
+
+ fourth table: role_role
+ columns:
+ parent_role_id (FK ref role(role_id))
+ child_role_id (FK ref role(role_id))
+
+ Model class for Role and Permission was created.
+ I used JdbcTemplate class to execute SQL queries in PermissionDao and RoleDao
+
+ For controller in RoleController and PermissionController i used RestController annotation to build REST API.
+
+
+To check the cycle in the Role-Role mapping to avoid cyclic dependencies i used the checkForCycle method which uses a helper
+ method checkForCycleHelper which performs a DFS starting from the given roleId to detect any cycles in the Role-Role mapping.
+
+ The helper method uses two sets visited and recStack to keep track of the visited nodes and nodes currently in the recursion stack.
+  If a node is already in the recursion stack, it means there's a cycle and we return true.
+  If a node is already visited, we return false. We add the node to the recursion stack before visiting its children and remove it from the
+  recursion stack after visiting all its children.
+
+
